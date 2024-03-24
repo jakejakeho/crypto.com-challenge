@@ -1,9 +1,9 @@
 package org.example.protfolio;
 
-import org.example.option.OptionMarketDataMessage;
-import org.example.option.OptionMarketDataProvider;
-import org.example.stock.StockMarketDataMessage;
-import org.example.stock.StockMarketDataProvider;
+import org.example.marketData.option.OptionMarketDataMessage;
+import org.example.marketData.option.OptionMarketDataProvider;
+import org.example.marketData.stock.StockMarketDataMessage;
+import org.example.marketData.stock.StockMarketDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,14 +50,14 @@ public class PortfolioProvider {
         optionMarketDataProvider.subscribe(getOptionPriceConsumer());
     }
 
-    private Consumer<StockMarketDataMessage> getStockPriceConsumer() {
+    private Consumer<List<StockMarketDataMessage>> getStockPriceConsumer() {
         return stockMarketDataMessage -> CompletableFuture.runAsync(() -> {
             log.info("PortfolioProvider received stock price " + stockMarketDataMessage);
             publishPortfolio();
         }, stockPriceThreadPool);
     }
 
-    private Consumer<OptionMarketDataMessage> getOptionPriceConsumer() {
+    private Consumer<List<OptionMarketDataMessage>> getOptionPriceConsumer() {
         return optionMarketDataMessage -> {
             CompletableFuture.runAsync(() -> {
                 log.info("PortfolioProvider received option price " + optionMarketDataMessage);

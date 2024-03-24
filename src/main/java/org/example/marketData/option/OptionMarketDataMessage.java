@@ -1,4 +1,4 @@
-package org.example.option;
+package org.example.marketData.option;
 
 import java.math.BigDecimal;
 
@@ -7,6 +7,11 @@ public class OptionMarketDataMessage {
     private String symbol;
 
     private BigDecimal latestPrice;
+
+    public OptionMarketDataMessage(String symbol, BigDecimal optionPrice) {
+        this.symbol = symbol;
+        this.latestPrice = optionPrice;
+    }
 
     public String getSymbol() {
         return symbol;

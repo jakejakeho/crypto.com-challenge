@@ -1,4 +1,4 @@
-package org.example.stock;
+package org.example.marketData.stock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @Service
@@ -19,13 +20,15 @@ public class StockMarketDataProvider {
 
     private Logger log = LoggerFactory.getLogger(StockMarketDataProvider.class);
 
-    private List<Consumer<StockMarketDataMessage>> consumers = Collections.synchronizedList(new ArrayList<>());
+    private List<Consumer<List<StockMarketDataMessage>>> consumers = Collections.synchronizedList(new ArrayList<>());
 
     ExecutorService threadPoolExecutor = Executors.newSingleThreadExecutor();
 
-    public void subscribe(Consumer<StockMarketDataMessage> consumer) {
+    public void subscribe(Consumer<List<StockMarketDataMessage>> consumer) {
         consumers.add(consumer);
     }
+
+    private AtomicReference<Integer> messageId = new AtomicReference<>(1);
 
     @Scheduled(fixedRate = 10000L, initialDelay = 0L)
     private void publish() {
@@ -34,13 +37,11 @@ public class StockMarketDataProvider {
         message1.setSymbol("AAPL");
         message1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)));
         messages.add(message1);
-        for (Consumer<StockMarketDataMessage> consumer : consumers) {
-            for (StockMarketDataMessage message : messages) {
-                CompletableFuture.runAsync(() -> {
-                    log.info("mock market data provider public message " + message);
-                    consumer.accept(message);
-                }, threadPoolExecutor);
-            }
+        for (Consumer<List<StockMarketDataMessage>> consumer : consumers) {
+            CompletableFuture.runAsync(() -> {
+                log.info("mock market data provider public message " + messages);
+                consumer.accept(messages);
+            }, threadPoolExecutor);
         }
     }
 

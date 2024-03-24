@@ -1,5 +1,6 @@
-package org.example.option;
+package org.example.marketData.option;
 
+import org.example.security.Security;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -7,8 +8,7 @@ import java.math.BigDecimal;
 @Service
 class OptionPriceCalculator {
 
-    public BigDecimal getOptionPrice(String symbol, BigDecimal stockPrice) {
+    public BigDecimal getOptionPrice(Security symbol, BigDecimal stockPrice) {
         return BigDecimal.ONE;
     }
-
 }
