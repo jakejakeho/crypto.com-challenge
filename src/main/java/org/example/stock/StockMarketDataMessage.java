@@ -1,4 +1,4 @@
-package org.example.marketData;
+package org.example.stock;
 
 import java.math.BigDecimal;
 
