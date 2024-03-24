@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Service
-public class MarketDataProvider {
+public class StockMarketDataProvider {
 
-    Logger log = LoggerFactory.getLogger(MarketDataProvider.class);
+    Logger log = LoggerFactory.getLogger(StockMarketDataProvider.class);
 
     List<Consumer<MarketDataMessage>> consumers = new ArrayList<>();
 

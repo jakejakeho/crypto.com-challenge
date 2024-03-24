@@ -1,11 +1,9 @@
 package org.example;
 
 import org.example.marketData.MarketDataMessage;
-import org.example.marketData.MarketDataProvider;
+import org.example.marketData.StockMarketDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,18 +13,18 @@ import java.util.function.Consumer;
 public class PortfolioResultSubscriber {
     Logger log = LoggerFactory.getLogger(PortfolioResultSubscriber.class);
 
-    private final MarketDataProvider marketDataProvider;
+    private final StockMarketDataProvider stockMarketDataProvider;
 
     private final PositionReader positionReader;
 
-    public PortfolioResultSubscriber(PositionReader positionReader, MarketDataProvider marketDataProvider) {
+    public PortfolioResultSubscriber(PositionReader positionReader, StockMarketDataProvider stockMarketDataProvider) {
         this.positionReader = positionReader;
-        this.marketDataProvider = marketDataProvider;
+        this.stockMarketDataProvider = stockMarketDataProvider;
     }
 
     @PostConstruct
     public void subscribe() {
-        marketDataProvider.subscribe(getConsumer());
+        stockMarketDataProvider.subscribe(getConsumer());
     }
 
     private Consumer<MarketDataMessage> getConsumer() {
