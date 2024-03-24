@@ -2,7 +2,7 @@ package org.example.marketData;
 
 import java.math.BigDecimal;
 
-public class StockMarketDataMessage {
+public class OptionMarketDataMessage {
 
     private String symbol;
 
@@ -26,7 +26,7 @@ public class StockMarketDataMessage {
 
     @Override
     public String toString() {
-        return "StockMarketDataMessage{" +
+        return "OptionMarketDataMessage{" +
                 "symbol='" + symbol + '\'' +
                 ", latestPrice=" + latestPrice +
                 '}';

@@ -24,6 +24,7 @@ public class PortfolioResultSubscriber {
 
     @PostConstruct
     public void subscribe() {
+        // TODO: async receive
         stockMarketDataProvider.subscribe(getConsumer());
     }
 
