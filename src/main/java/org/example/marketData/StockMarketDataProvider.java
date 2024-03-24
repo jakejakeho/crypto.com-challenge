@@ -15,16 +15,16 @@ public class StockMarketDataProvider {
 
     Logger log = LoggerFactory.getLogger(StockMarketDataProvider.class);
 
-    List<Consumer<MarketDataMessage>> consumers = new ArrayList<>();
+    List<Consumer<StockMarketDataMessage>> consumers = new ArrayList<>();
 
-    public void subscribe(Consumer<MarketDataMessage> consumer) {
+    public void subscribe(Consumer<StockMarketDataMessage> consumer) {
         consumers.add(consumer);
     }
 
     @Scheduled(fixedRate = 1000L)
     public void publish() {
-        for (Consumer<MarketDataMessage> consumer : consumers) {
-            MarketDataMessage message = new MarketDataMessage();
+        for (Consumer<StockMarketDataMessage> consumer : consumers) {
+            StockMarketDataMessage message = new StockMarketDataMessage();
             message.setSymbol("AAPL");
             message.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)));
             log.info("mock market data provider public message " + message);

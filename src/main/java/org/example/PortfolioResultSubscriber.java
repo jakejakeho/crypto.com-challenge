@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.marketData.MarketDataMessage;
+import org.example.marketData.StockMarketDataMessage;
 import org.example.marketData.StockMarketDataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class PortfolioResultSubscriber {
         stockMarketDataProvider.subscribe(getConsumer());
     }
 
-    private Consumer<MarketDataMessage> getConsumer() {
+    private Consumer<StockMarketDataMessage> getConsumer() {
         return message -> {
             log.info("received message from mock market data provider" + message);
         };

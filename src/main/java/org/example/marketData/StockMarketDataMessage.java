@@ -2,7 +2,7 @@ package org.example.marketData;
 
 import java.math.BigDecimal;
 
-public class MarketDataMessage {
+public class StockMarketDataMessage {
 
     private String symbol;
 
