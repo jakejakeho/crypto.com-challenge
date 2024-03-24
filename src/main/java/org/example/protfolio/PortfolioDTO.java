@@ -49,16 +49,17 @@ public class PortfolioDTO {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("## ").append(id).append(" Market Data Update\n");
+        stringBuilder.append("\n## ").append(id).append(" Market Data Update\n");
         stringBuilder.append(getPriceChange());
         stringBuilder.append("\n\n## Portfolio\n");
-        stringBuilder.append("symbol\t\t\tprice\t\t\tqty\t\t\tvalue\t\t\t");
+        stringBuilder.append(String.format("%-20s%20s%20s%20s", "symbol", "price", "qty", "value"));
         for (SecurityDTO securityDTO : getSecurities()) {
             stringBuilder.append(securityDTO.toString());
             stringBuilder.append("\n");
         }
         stringBuilder.append('\n');
-        stringBuilder.append("#Total portfolio \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t").append(getTotalPortfolio());
+        stringBuilder.append('\n');
+        stringBuilder.append(String.format("%-20s%60s", "#Total portfolio", getTotalPortfolio()));
         return stringBuilder.toString();
     }
 }

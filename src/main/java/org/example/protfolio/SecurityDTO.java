@@ -45,6 +45,6 @@ public class SecurityDTO {
 
     @Override
     public String toString() {
-        return getSymbol() + "\t\t\t" + getPrice() + "\t\t\t" + getQty() + "\t\t\t" + getValue();
+        return String.format("%-20s%20s%20s%20s", getSymbol(), getPrice(), getQty(), getValue());
     }
 }
