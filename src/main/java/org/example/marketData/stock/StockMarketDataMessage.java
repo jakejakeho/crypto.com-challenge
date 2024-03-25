@@ -1,7 +1,5 @@
 package org.example.marketData.stock;
 
-import org.hibernate.collection.internal.PersistentList;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,7 @@ public class StockMarketDataMessage {
 
     private List<StockMarketChange> changes = new ArrayList<>();
 
-    private static class StockMarketChange{
+    public static class StockMarketChange{
         private String symbol;
 
         private BigDecimal latestPrice;
@@ -32,5 +30,21 @@ public class StockMarketDataMessage {
         public void setLatestPrice(BigDecimal latestPrice) {
             this.latestPrice = latestPrice;
         }
+    }
+
+    public Integer getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
+    }
+
+    public List<StockMarketChange> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(List<StockMarketChange> changes) {
+        this.changes = changes;
     }
 }

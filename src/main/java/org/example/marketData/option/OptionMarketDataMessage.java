@@ -1,39 +1,55 @@
 package org.example.marketData.option;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class OptionMarketDataMessage {
 
-    private String symbol;
+    private Integer messageId;
 
-    private BigDecimal latestPrice;
+    private List<OptionMarketDataChange> changes;
 
-    public OptionMarketDataMessage(String symbol, BigDecimal optionPrice) {
-        this.symbol = symbol;
-        this.latestPrice = optionPrice;
+    public static class OptionMarketDataChange {
+
+        public OptionMarketDataChange(String symbol, BigDecimal latestPrice) {
+            this.symbol = symbol;
+            this.latestPrice = latestPrice;
+        }
+
+        private String symbol;
+
+        private BigDecimal latestPrice;
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public BigDecimal getLatestPrice() {
+            return latestPrice;
+        }
+
+        public void setLatestPrice(BigDecimal latestPrice) {
+            this.latestPrice = latestPrice;
+        }
     }
 
-    public String getSymbol() {
-        return symbol;
+    public Integer getMessageId() {
+        return messageId;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
-    public BigDecimal getLatestPrice() {
-        return latestPrice;
+    public List<OptionMarketDataChange> getChanges() {
+        return changes;
     }
 
-    public void setLatestPrice(BigDecimal latestPrice) {
-        this.latestPrice = latestPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "OptionMarketDataMessage{" +
-                "symbol='" + symbol + '\'' +
-                ", latestPrice=" + latestPrice +
-                '}';
+    public void setChanges(List<OptionMarketDataChange> changes) {
+        this.changes = changes;
     }
 }

@@ -16,14 +16,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @Service
 public class OptionMarketDataProvider {
 
-    Logger log = LoggerFactory.getLogger(OptionMarketDataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(OptionMarketDataProvider.class);
 
-    private List<Consumer<List<OptionMarketDataMessage>>> consumers = Collections.synchronizedList(new ArrayList<>());
+    private List<Consumer<OptionMarketDataMessage>> consumers = Collections.synchronizedList(new ArrayList<>());
 
     private ExecutorService consumerThreadPool = Executors.newSingleThreadExecutor();
 
@@ -39,7 +40,7 @@ public class OptionMarketDataProvider {
         this.securityService = securityService;
     }
 
-    public void subscribe(Consumer<List<OptionMarketDataMessage>> consumer) {
+    public void subscribe(Consumer<OptionMarketDataMessage> consumer) {
         consumers.add(consumer);
     }
 
@@ -48,26 +49,30 @@ public class OptionMarketDataProvider {
         stockMarketDataProvider.subscribe(getConsumer());
     }
 
-    private Consumer<List<StockMarketDataMessage>> getConsumer() {
+    private Consumer<StockMarketDataMessage> getConsumer() {
         return stockMarketDataMessage -> CompletableFuture.runAsync(() -> processStockPrice(stockMarketDataMessage), consumerThreadPool);
     }
 
-    private void processStockPrice(List<StockMarketDataMessage> stockMarketDataMessages) {
-        List<OptionMarketDataMessage> optionMarketDataMessages = new ArrayList<>();
-        for (StockMarketDataMessage stockMarketDataMessage : stockMarketDataMessages) {
-            List<Security> options = securityService.findAllOptionsBySymbol(stockMarketDataMessage.getSymbol());
+    private void processStockPrice(StockMarketDataMessage stockMarketDataMessage) {
+        OptionMarketDataMessage optionMarketDataMessage = new OptionMarketDataMessage();
+        optionMarketDataMessage.setMessageId(stockMarketDataMessage.getMessageId());
+        optionMarketDataMessage.setChanges(new ArrayList<>());
+
+        for (StockMarketDataMessage.StockMarketChange stockMarketChange : stockMarketDataMessage.getChanges()) {
+            List<Security> options = securityService.findAllOptionsBySymbol(stockMarketChange.getSymbol());
             for (Security option : options) {
-                BigDecimal optionPrice = optionPriceCalculator.getOptionPrice(option, stockMarketDataMessage.getLatestPrice());
-                log.info(stockMarketDataMessage + "Option {}: price: = ", stockMarketDataMessage.getSymbol(), optionPrice);
-                optionMarketDataMessages.add(new OptionMarketDataMessage(option.getSymbol(), optionPrice));
+                BigDecimal optionPrice = optionPriceCalculator.getOptionPrice(option, stockMarketChange.getLatestPrice());
+                log.info(stockMarketDataMessage + "Option {}: price: = ", option, optionPrice);
+                optionMarketDataMessage.getChanges().add(new OptionMarketDataMessage.OptionMarketDataChange(option.getSymbol(), optionPrice));
             }
         }
-        publishOptionPrice(optionMarketDataMessages);
+        log.info("after process stock price: {}", optionMarketDataMessage);
+        publishOptionPrice(optionMarketDataMessage);
     }
 
-    private void publishOptionPrice(List<OptionMarketDataMessage> messages) {
-        for (Consumer<List<OptionMarketDataMessage>> consumer : consumers) {
-            CompletableFuture.runAsync(() -> consumer.accept(messages), publisherThreadPool);
+    private void publishOptionPrice(OptionMarketDataMessage message) {
+        for (Consumer<OptionMarketDataMessage> consumer : consumers) {
+            CompletableFuture.runAsync(() -> consumer.accept(message), publisherThreadPool);
         }
     }
 }

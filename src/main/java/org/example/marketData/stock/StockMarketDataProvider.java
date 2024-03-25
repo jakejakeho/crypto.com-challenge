@@ -18,31 +18,43 @@ import java.util.function.Consumer;
 @Service
 public class StockMarketDataProvider {
 
-    private Logger log = LoggerFactory.getLogger(StockMarketDataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(StockMarketDataProvider.class);
 
-    private List<Consumer<List<StockMarketDataMessage>>> consumers = Collections.synchronizedList(new ArrayList<>());
+    private final List<Consumer<StockMarketDataMessage>> consumers = Collections.synchronizedList(new ArrayList<>());
 
     ExecutorService threadPoolExecutor = Executors.newSingleThreadExecutor();
 
-    public void subscribe(Consumer<List<StockMarketDataMessage>> consumer) {
+    public void subscribe(Consumer<StockMarketDataMessage> consumer) {
         consumers.add(consumer);
     }
 
-    private AtomicReference<Integer> messageId = new AtomicReference<>(1);
+    private final AtomicReference<Integer> messageId = new AtomicReference<>(1);
 
     @Scheduled(fixedRate = 10000L, initialDelay = 0L)
     private void publish() {
-        List<StockMarketDataMessage> messages = new ArrayList<>();
-        StockMarketDataMessage message1 = new StockMarketDataMessage();
-        message1.setSymbol("AAPL");
-        message1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)));
-        messages.add(message1);
-        for (Consumer<List<StockMarketDataMessage>> consumer : consumers) {
+        StockMarketDataMessage stockMarketDataMessage = getRandomStockMarketData();
+        for (Consumer<StockMarketDataMessage> consumer : consumers) {
             CompletableFuture.runAsync(() -> {
-                log.info("mock market data provider public message " + messages);
-                consumer.accept(messages);
+                log.info("mock market data provider public message " + stockMarketDataMessage);
+                consumer.accept(stockMarketDataMessage);
             }, threadPoolExecutor);
         }
+    }
+
+    private StockMarketDataMessage getRandomStockMarketData() {
+        StockMarketDataMessage stockMarketDataMessage = new StockMarketDataMessage();
+        stockMarketDataMessage.setMessageId(messageId.getAndAccumulate(1, Integer::sum));
+        stockMarketDataMessage.setChanges(new ArrayList<>());
+        StockMarketDataMessage.StockMarketChange change1 = new StockMarketDataMessage.StockMarketChange();
+        change1.setSymbol("AAPL");
+        change1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)));
+        stockMarketDataMessage.getChanges().add(change1);
+
+        StockMarketDataMessage.StockMarketChange change2 = new StockMarketDataMessage.StockMarketChange();
+        change2.setSymbol("TESLA");
+        change2.setLatestPrice(BigDecimal.valueOf(randDouble(300, 400)));
+        stockMarketDataMessage.getChanges().add(change2);
+        return stockMarketDataMessage;
     }
 
     private double randDouble(double bound1, double bound2) {

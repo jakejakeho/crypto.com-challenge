@@ -30,13 +30,9 @@ public class PortfolioProvider {
         this.optionMarketDataProvider = optionMarketDataProvider;
     }
 
-    Logger log = LoggerFactory.getLogger(PortfolioProvider.class);
+    private final Logger log = LoggerFactory.getLogger(PortfolioProvider.class);
 
     private List<Consumer<PortfolioDTO>> consumers = Collections.synchronizedList(new ArrayList<>());
-
-    private ExecutorService stockPriceThreadPool = Executors.newSingleThreadExecutor();
-
-    private ExecutorService optionPriceThreadPool = Executors.newSingleThreadExecutor();
 
     private ExecutorService publishThreadPool = Executors.newSingleThreadExecutor();
 
@@ -46,24 +42,6 @@ public class PortfolioProvider {
 
     @PostConstruct
     private void subscribePrice() {
-        stockMarketDataProvider.subscribe(getStockPriceConsumer());
-        optionMarketDataProvider.subscribe(getOptionPriceConsumer());
-    }
-
-    private Consumer<List<StockMarketDataMessage>> getStockPriceConsumer() {
-        return stockMarketDataMessage -> CompletableFuture.runAsync(() -> {
-            log.info("PortfolioProvider received stock price " + stockMarketDataMessage);
-            publishPortfolio();
-        }, stockPriceThreadPool);
-    }
-
-    private Consumer<List<OptionMarketDataMessage>> getOptionPriceConsumer() {
-        return optionMarketDataMessage -> {
-            CompletableFuture.runAsync(() -> {
-                log.info("PortfolioProvider received option price " + optionMarketDataMessage);
-                publishPortfolio();
-            }, optionPriceThreadPool);
-        };
     }
 
     private void publishPortfolio() {

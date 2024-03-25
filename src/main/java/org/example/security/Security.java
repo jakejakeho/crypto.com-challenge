@@ -59,4 +59,15 @@ public class Security {
     public void setMaturityDate(Date maturityDate) {
         this.maturityDate = maturityDate;
     }
+
+    @Override
+    public String toString() {
+        return "Security{" +
+                "id=" + id +
+                ", symbol='" + symbol + '\'' +
+                ", securityType='" + securityType + '\'' +
+                ", strikePrice=" + strikePrice +
+                ", maturityDate=" + maturityDate +
+                '}';
+    }
 }
