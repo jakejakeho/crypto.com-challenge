@@ -1,6 +1,7 @@
 package org.example.marketData.option;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ class OptionPriceCalculator {
     private static final double RISK_FREE_RATE = 0.02;
 
     public BigDecimal getOptionPrice(Security security, BigDecimal stockPrice) {
-        return BigDecimal.valueOf(getOptionPriceDouble(security, stockPrice));
+        return BigDecimal.valueOf(getOptionPriceDouble(security, stockPrice)).setScale(2, RoundingMode.UP);
     }
 
     private double getOptionPriceDouble(Security security, BigDecimal stockPriceBigDecimal) {

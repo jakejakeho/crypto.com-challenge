@@ -8,6 +8,7 @@ import org.example.marketData.stock.StockMarketDataProvider;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +46,8 @@ public class MarketDataProvider {
     private void processStockPrice(StockMarketDataMessage stockMarketDataMessage) {
         map.putIfAbsent(stockMarketDataMessage.getMessageId(), Collections.synchronizedList(new ArrayList<>()));
         for (StockMarketDataMessage.StockMarketChange change : stockMarketDataMessage.getChanges()) {
-            map.get(stockMarketDataMessage.getMessageId()).add(new MarketDataChangeDTO(change.getSymbol(), change.getLatestPrice()));
+            map.get(stockMarketDataMessage.getMessageId()).add(new MarketDataChangeDTO(change.getSymbol(),
+                change.getLatestPrice().setScale(2, RoundingMode.UP)));
         }
     }
 

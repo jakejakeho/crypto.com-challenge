@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,12 +48,12 @@ public class StockMarketDataProvider {
         stockMarketDataMessage.setChanges(new ArrayList<>());
         StockMarketDataMessage.StockMarketChange change1 = new StockMarketDataMessage.StockMarketChange();
         change1.setSymbol("AAPL");
-        change1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)));
+        change1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)).setScale(2, RoundingMode.UP));
         stockMarketDataMessage.getChanges().add(change1);
 
         StockMarketDataMessage.StockMarketChange change2 = new StockMarketDataMessage.StockMarketChange();
         change2.setSymbol("TESLA");
-        change2.setLatestPrice(BigDecimal.valueOf(randDouble(300, 400)));
+        change2.setLatestPrice(BigDecimal.valueOf(randDouble(300, 400)).setScale(2, RoundingMode.UP));
         stockMarketDataMessage.getChanges().add(change2);
         return stockMarketDataMessage;
     }
