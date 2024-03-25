@@ -47,7 +47,7 @@ public class MarketDataProvider {
         map.putIfAbsent(stockMarketDataMessage.getMessageId(), Collections.synchronizedList(new ArrayList<>()));
         for (StockMarketDataMessage.StockMarketChange change : stockMarketDataMessage.getChanges()) {
             map.get(stockMarketDataMessage.getMessageId()).add(new MarketDataChangeDTO(change.getSymbol(),
-                change.getLatestPrice().setScale(2, RoundingMode.UP)));
+                change.getLatestPrice()));
         }
     }
 

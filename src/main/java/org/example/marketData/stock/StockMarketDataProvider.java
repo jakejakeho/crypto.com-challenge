@@ -52,7 +52,7 @@ public class StockMarketDataProvider {
         stockMarketDataMessage.getChanges().add(change1);
 
         StockMarketDataMessage.StockMarketChange change2 = new StockMarketDataMessage.StockMarketChange();
-        change2.setSymbol("TESLA");
+        change2.setSymbol("TSLA");
         change2.setLatestPrice(BigDecimal.valueOf(randDouble(300, 400)).setScale(2, RoundingMode.UP));
         stockMarketDataMessage.getChanges().add(change2);
         return stockMarketDataMessage;
