@@ -48,12 +48,12 @@ public class StockMarketDataProvider {
         stockMarketDataMessage.setChanges(new ArrayList<>());
         StockMarketDataMessage.StockMarketChange change1 = new StockMarketDataMessage.StockMarketChange();
         change1.setSymbol("AAPL");
-        change1.setLatestPrice(BigDecimal.valueOf(randDouble(1, 100)).setScale(2, RoundingMode.UP));
+        change1.setLatestPrice(BigDecimal.valueOf(randDouble(100, 110)).setScale(2, RoundingMode.UP));
         stockMarketDataMessage.getChanges().add(change1);
 
         StockMarketDataMessage.StockMarketChange change2 = new StockMarketDataMessage.StockMarketChange();
         change2.setSymbol("TSLA");
-        change2.setLatestPrice(BigDecimal.valueOf(randDouble(300, 400)).setScale(2, RoundingMode.UP));
+        change2.setLatestPrice(BigDecimal.valueOf(randDouble(380, 420)).setScale(2, RoundingMode.UP));
         stockMarketDataMessage.getChanges().add(change2);
         return stockMarketDataMessage;
     }
