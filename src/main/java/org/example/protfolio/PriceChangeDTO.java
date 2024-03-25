@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 
 public class PriceChangeDTO {
 
+    public PriceChangeDTO(String symbol, BigDecimal newPrice) {
+        this.symbol = symbol;
+        this.newPrice = newPrice;
+    }
+
     public String symbol;
 
     public BigDecimal newPrice;
@@ -26,6 +31,8 @@ public class PriceChangeDTO {
 
     @Override
     public String toString() {
-        return getSymbol() + " change to " + newPrice.toString();
+        return getSymbol() + " change to " + newPrice.toString() + "\n";
     }
+
+
 }

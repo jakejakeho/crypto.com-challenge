@@ -11,4 +11,20 @@ public class MarketDataChangeDTO {
         this.symbol = symbol;
         this.latestPrice = latestPrice;
     }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public BigDecimal getLatestPrice() {
+        return latestPrice;
+    }
+
+    public void setLatestPrice(BigDecimal latestPrice) {
+        this.latestPrice = latestPrice;
+    }
 }

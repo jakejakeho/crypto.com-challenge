@@ -1,5 +1,6 @@
-package org.example;
+package org.example.position;
 
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class PositionReader {
     public List<Position> readCsvFile() {
         List<Position> positions = new ArrayList<>();
         try {
-            String filePath = System.getProperty("user.dir") + "/position.csv";
+            String filePath = System.getProperty("user.dir") + "/src/main/java/org/example/position/position.csv";
             File csvFile = new File(filePath);
             Scanner csvReader = new Scanner(csvFile);
             if (csvReader.hasNextLine()) {

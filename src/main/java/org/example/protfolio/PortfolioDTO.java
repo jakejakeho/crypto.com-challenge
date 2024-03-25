@@ -6,27 +6,27 @@ import java.util.List;
 
 public class PortfolioDTO {
 
-    private Integer id;
+    private Integer messageId;
 
-    private PriceChangeDTO priceChange;
+    private List<PriceChangeDTO> priceChange;
 
     private List<SecurityDTO> securities = Collections.emptyList();
 
     private BigDecimal totalPortfolio;
 
-    public Integer getId() {
-        return id;
+    public Integer getMessageId() {
+        return messageId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
     }
 
-    public PriceChangeDTO getPriceChange() {
+    public List<PriceChangeDTO> getPriceChange() {
         return priceChange;
     }
 
-    public void setPriceChange(PriceChangeDTO priceChange) {
+    public void setPriceChange(List<PriceChangeDTO> priceChange) {
         this.priceChange = priceChange;
     }
 
@@ -49,10 +49,10 @@ public class PortfolioDTO {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n## ").append(id).append(" Market Data Update\n");
+        stringBuilder.append("\n## ").append(messageId).append(" Market Data Update\n");
         stringBuilder.append(getPriceChange());
         stringBuilder.append("\n\n## Portfolio\n");
-        stringBuilder.append(String.format("%-20s%20s%20s%20s", "symbol", "price", "qty", "value"));
+        stringBuilder.append(String.format("%-20s%20s%20s%20s\n", "symbol", "price", "qty", "value"));
         for (SecurityDTO securityDTO : getSecurities()) {
             stringBuilder.append(securityDTO.toString());
             stringBuilder.append("\n");

@@ -2,7 +2,6 @@ package org.example.protfolio;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -12,15 +11,15 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 @Service
-public class PortfolioResultSubscriber {
+public class PortfolioConsumer {
 
     private final PortfolioProvider portfolioProvider;
 
-    public PortfolioResultSubscriber(PortfolioProvider portfolioProvider) {
+    public PortfolioConsumer(PortfolioProvider portfolioProvider) {
         this.portfolioProvider = portfolioProvider;
     }
 
-    private final Logger log = LoggerFactory.getLogger(PortfolioResultSubscriber.class);
+    private final Logger log = LoggerFactory.getLogger(PortfolioConsumer.class);
 
     private final ExecutorService consumerThreadPool = Executors.newSingleThreadExecutor();
 
