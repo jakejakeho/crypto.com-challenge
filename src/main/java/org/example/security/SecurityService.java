@@ -8,4 +8,6 @@ import java.util.List;
 public interface SecurityService {
 
     List<Security> findAllOptionsBySymbol(String symbol);
+
+    List<Security> findAllStocks();
 }

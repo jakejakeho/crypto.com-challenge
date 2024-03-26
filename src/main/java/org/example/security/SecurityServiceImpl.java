@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {
@@ -37,6 +38,14 @@ public class SecurityServiceImpl implements SecurityService {
             log.error("Failed to retrieve {} options", symbol);
             throw new UnsupportedOperationException();
         }
+    }
+
+    @Override
+    public List<Security> findAllStocks() {
+        return ((List<Security>) securityRepository.findAll())
+                .stream()
+                .filter(s -> Objects.equals(s.getSecurityType(), SecurityType.STOCK.toString()))
+                .collect(Collectors.toList());
     }
 
     private List<Security> findAllOptionsBySymbolInner(String symbol) {

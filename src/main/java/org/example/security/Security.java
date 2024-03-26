@@ -16,6 +16,8 @@ public class Security {
 
     private String securityType;
 
+    private BigInteger initialPrice;
+
     private BigInteger strikePrice;
 
     private Date maturityDate;
@@ -34,6 +36,10 @@ public class Security {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public Double getInitialPrice() {
+        return initialPrice.doubleValue();
     }
 
     public String getSecurityType() {
