@@ -25,12 +25,10 @@ public class PortfolioConsumer {
 
     @PostConstruct
     private void subscribe() {
-        portfolioProvider.subscribe(getConsumer());
+        portfolioProvider.subscribe(this:: processPortfolio);
     }
 
-    private Consumer<PortfolioDTO> getConsumer() {
-        return portfolioDTO -> CompletableFuture.runAsync(() -> {
-            log.info(portfolioDTO.toString());
-        }, consumerThreadPool);
+    private void processPortfolio(PortfolioDTO portfolioDTO) {
+        CompletableFuture.runAsync(() -> log.info(portfolioDTO.toString()), consumerThreadPool);
     }
 }
