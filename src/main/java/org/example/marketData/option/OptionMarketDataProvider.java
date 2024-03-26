@@ -34,9 +34,9 @@ public class OptionMarketDataProvider {
     private final OptionPriceCalculator optionPriceCalculator;
     private final SecurityService securityService;
 
-    public OptionMarketDataProvider(StockMarketDataProvider stockMarketDataProvider, OptionPriceCalculator optionPriceCalculator, SecurityService securityService) {
+    public OptionMarketDataProvider(StockMarketDataProvider stockMarketDataProvider, SecurityService securityService) {
         this.stockMarketDataProvider = stockMarketDataProvider;
-        this.optionPriceCalculator = optionPriceCalculator;
+        this.optionPriceCalculator = new OptionPriceCalculator();
         this.securityService = securityService;
     }
 
@@ -46,11 +46,7 @@ public class OptionMarketDataProvider {
 
     @PostConstruct
     private void subscribeStockPrice() {
-        stockMarketDataProvider.subscribe(getConsumer());
-    }
-
-    private Consumer<StockMarketDataMessage> getConsumer() {
-        return stockMarketDataMessage -> CompletableFuture.runAsync(() -> processStockPrice(stockMarketDataMessage), consumerThreadPool);
+        stockMarketDataProvider.subscribe(this::processStockPrice);
     }
 
     private void processStockPrice(StockMarketDataMessage stockMarketDataMessage) {
@@ -62,7 +58,7 @@ public class OptionMarketDataProvider {
             List<Security> options = securityService.findAllOptionsBySymbol(stockMarketChange.getSymbol());
             for (Security option : options) {
                 BigDecimal optionPrice = optionPriceCalculator.getOptionPrice(option, stockMarketChange.getLatestPrice());
-                log.info(stockMarketDataMessage + "Option {}: price: = ", option, optionPrice);
+                log.info(stockMarketDataMessage + "Option {}: price={}", option, optionPrice);
                 optionMarketDataMessage.getChanges().add(new OptionMarketDataMessage.OptionMarketDataChange(option.getSymbol(), optionPrice));
             }
         }

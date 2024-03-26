@@ -1,19 +1,17 @@
 package org.example.marketData.option;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.example.security.Security;
+import org.example.security.SecurityType;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Objects;
 
-import org.apache.commons.math3.distribution.NormalDistribution;
-import org.example.security.Security;
-import org.example.security.SecurityType;
-import org.springframework.stereotype.Service;
-
 import static org.example.marketData.Constants.RISK_FREE_RATE;
 import static org.example.marketData.Constants.VOLATILITY;
 
-@Service
 class OptionPriceCalculator {
 
     public BigDecimal getOptionPrice(Security security, BigDecimal stockPrice) {
