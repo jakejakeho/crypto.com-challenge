@@ -31,7 +31,7 @@ public class StockMarketDataProvider {
 
     private final AtomicReference<Integer> messageId = new AtomicReference<>(1);
 
-    @Scheduled(fixedRate = 10000L, initialDelay = 0L)
+    @Scheduled(fixedRate = 1000L, initialDelay = 0L)
     private void publish() {
         StockMarketDataMessage stockMarketDataMessage = getRandomStockMarketData();
         for (Consumer<StockMarketDataMessage> consumer : consumers) {

@@ -50,7 +50,8 @@ public class PortfolioDTO {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n## ").append(messageId).append(" Market Data Update\n");
-        stringBuilder.append(getPriceChange());
+        for (PriceChangeDTO pc : getPriceChange())
+            stringBuilder.append(pc);
         stringBuilder.append("\n\n## Portfolio\n");
         stringBuilder.append(String.format("%-20s%20s%20s%20s\n", "symbol", "price", "qty", "value"));
         for (SecurityDTO securityDTO : getSecurities()) {

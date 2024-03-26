@@ -40,3 +40,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/data/db.trace.db
